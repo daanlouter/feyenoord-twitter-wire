@@ -1,0 +1,65 @@
+<html>
+	<head>
+		<style>
+		.tweep{
+			width:160px;
+			font-size:14px;
+			font-family:Arial;
+			float:left;
+			margin-right:20px;
+			margin-bottom:20px;
+		}
+		.tweep h2{
+			font-size:14px;
+			margin:0;
+		}
+		.tweep h3{
+			font-size:12px;
+			margin:0;
+			font-weight:normal;
+			color:#767676;
+		}
+
+		.tweep .avatar{
+			width:160px;
+			height:160px;
+			background-size:contain;
+			background-position: center;
+			background-repeat: no-repeat;
+		}
+		</style>
+	</head>
+	<body>
+
+
+	<script src="jquery-1.11.3.min.js"></script>
+	<script src="underscore-min.js"></script>
+	<script id="template" type="script/template">
+		<div class="tweep">
+			<div class="avatar" style="background-image:url(<%= profile_image_url %>)" />
+			<h2><%=name%></h2>
+			<h3><%=followers_count%> followers</h3>
+		</div>
+	</script>
+	<script>
+		var tweeps;
+		$.getJSON('tweeps.json',function(i,j){
+			tweeps = i;
+			doStuff();
+		})
+
+		function doStuff(){
+			var templateHTML = document.querySelector('#template').innerHTML;
+			var compiled = _.template(templateHTML);
+			var sorted = _.sortBy(tweeps,"followers_count").reverse();
+			var body = $('body');
+
+			sorted.forEach(function(tweep){
+				tweep.profile_image_url = tweep.profile_image_url.replace('_normal','')
+				body.append(compiled(tweep))
+			})
+
+		}
+	</script
+	</body>
+</html>
